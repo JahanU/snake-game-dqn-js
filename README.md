@@ -1,1 +1,1 @@
-Snake Game in Plain old JS 
+Snake Game in pain old JS 
