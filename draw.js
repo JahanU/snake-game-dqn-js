@@ -1,0 +1,45 @@
+const canvas = document.querySelector('.canvas');
+const context = canvas.getContext('2d');
+const scale = 20; // Size
+const rows = canvas.height / scale;
+const columns = canvas.width / scale;
+var snake;
+
+(function setup() {
+  snake = new Snake(); // Init objects
+  fruit = new Fruit();
+  fruit.pickLocation(); // Choose random location
+
+  // Updates view
+  window.setInterval(() => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    fruit.draw();
+    snake.draw();
+    if (snake.paused == false) {
+      document.querySelector('.paused').innerText = '';
+      snake.update();
+
+      if (snake.eat(fruit)) {
+        // If snake touches fruit, then update fruit location
+        fruit.pickLocation();
+      } else {
+        // else check for detection
+        snake.checkCollision();
+      }
+      document.querySelector('.score').innerText = snake.total; // Update score
+    }
+    if (snake.paused) {
+      document.querySelector('.paused').innerText = 'Paused';
+    }
+    if (snake.gameOver) {
+      document.querySelector('.paused').innerText = 'Game Over';
+    }
+  }, 120);
+})();
+
+// Pass any action from the keyboard to change the snake direction
+document.onkeydown = function(event) {
+  snake.changeDirection(event.keyCode);
+  // Convert keyboard action to number
+};
