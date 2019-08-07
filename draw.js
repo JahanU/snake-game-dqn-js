@@ -26,7 +26,7 @@ var snake;
         snake.checkCollision();
       }
       document.querySelector('.score').innerText = snake.total; // Update score
-      document.querySelector('.highest_score').innerText = 'highest Score: ' + localStorage['highestScoreKey'] || '' // Display highest Score
+      document.querySelector('.highest_score').innerText = 'highest Score: ' + localStorage['highestScoreKey'] || '0' // Display highest Score
 
     }
     if (snake.paused) {
@@ -35,6 +35,7 @@ var snake;
     if (snake.gameOver) {
       document.querySelector('.paused').innerText = 'Game Over';
       this.highestScore();
+
     }
   }, 115); // Speed
 })();
@@ -43,15 +44,15 @@ var snake;
 document.onkeydown = function (event) {
   snake.changeDirection(event.keyCode); // Convert keyboard action to number
 };
-document.getElementsByClassName('buttons').addEventListener('click', function () {
-  alert('!!')
-  snake.changeDirection(event); // Convert keyboard action to number
-});
+
 
 
 
 this.highestScore = function () {
-  localStorage['highestScoreKey'] = 0
-  if (snake.total > this.localStorage['highestScoreKey'])
+  if (localStorage['highestScoreKey'] == 'undefined') {
+    localStorage['highestScoreKey'] = 0
+  }
+  if (snake.total > localStorage['highestScoreKey']) {
     localStorage['highestScoreKey'] = snake.total; // only strings
+  }
 }
