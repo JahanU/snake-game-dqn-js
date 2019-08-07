@@ -1,0 +1,22 @@
+#canvas-container {
+    align-items: center;
+}
+
+.canvas {
+    width: 30%;
+    height: 20%;
+}
+
+#buttons-container {
+    width: 30%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.buttons {
+    float: center;
+    width: 18%;
+    background: #DEE2E3;
+    margin: 6px;
+    height: 40px;
+}
