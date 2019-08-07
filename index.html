@@ -10,10 +10,15 @@
     width="500"
     style="background-color: #8A857D">
   </canvas>
-    <h1 class="score"></h1>
-    <h2 class="highest_score"></h2>
-    <h2 class="paused"></h2>
+  <button onclick="snake.changeDirection(37)">Left</button>
+  <button onclick="snake.changeDirection(38)">Up</button>
+  <button onclick="snake.changeDirection(39)">Right</button>
+  <button onclick="snake.changeDirection(40)">Down</button>
+  <button onclick="snake.changeDirection(80)">Pause</button>
 
+  <h1 class="score"></h1>
+  <h2 class="highest_score"></h2>
+  <h2 class="paused"></h2>
 </body>
 <script type="text/javascript" src="fruit.js"></script>
 <script type="text/javascript" src="snake.js"></script>

@@ -41,9 +41,13 @@ var snake;
 
 // Pass any action from the keyboard to change the snake direction
 document.onkeydown = function (event) {
-  snake.changeDirection(event.keyCode);
-  // Convert keyboard action to number
+  snake.changeDirection(event.keyCode); // Convert keyboard action to number
 };
+document.getElementsByClassName('buttons').addEventListener('click', function () {
+  alert('!!')
+  snake.changeDirection(event); // Convert keyboard action to number
+});
+
 
 
 this.highestScore = function () {

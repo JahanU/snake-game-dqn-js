@@ -9,6 +9,7 @@ function Snake() {
   this.gameOver = false;
   this.lastDirection = -1;
 
+
   // Context is getting the context from the 2D canvas
   this.draw = function () {
     context.fillStyle = '#DEE2E3';
@@ -41,10 +42,9 @@ function Snake() {
     if (direction != 80) {
       this.lastDirection = direction;
     }
-
     // Convert keyboard action to number
     switch (direction) {
-      case 37: // LEFT
+      case 37 || 'btnLeft': // LEFT
         this.xSpeed = -scale * 1;
         this.ySpeed = 0;
         break;
@@ -70,13 +70,45 @@ function Snake() {
         }
     }
   };
+  this.changeDirectionButtons = function (direction) {
+    if (direction != 80) {
+      this.lastDirection = direction;
+    }
+
+    // Convert keyboard action to number
+    switch (direction) {
+      case 37: // LEFT
+        this.xSpeed = -scale * 1;
+        this.ySpeed = 0;
+        break;
+      case 38: // UP
+        this.xSpeed = 0;
+        this.ySpeed = -scale * 1;
+        break;
+      case 39: // RIGHT
+        this.xSpeed = scale * 1;
+        this.ySpeed = 0;
+        break;
+      case 40: // DOWN
+        this.xSpeed = 0;
+        this.ySpeed = scale * 1;
+        break;
+      case 80:
+        this.paused = !this.paused; // Opposite value
+        if (this.paused) {
+          break;
+        } else {
+          this.changeDirectionButtons(this.lastDirection);
+          break;
+        }
+    }
+  };
 
   this.eat = function (fruit) {
     if (this.x === fruit.x && this.y === fruit.y) {
       this.total++;
       return true;
     }
-
     return false;
   };
 
