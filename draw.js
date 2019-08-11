@@ -47,12 +47,10 @@ document.onkeydown = function (event) {
 
 
 
-
 this.highestScore = function () {
-  if (localStorage['highestScoreKey'] == 'undefined') {
+  if (localStorage['highestScoreKey'] == 'undefined')
     localStorage['highestScoreKey'] = 0
-  }
-  if (snake.total > localStorage['highestScoreKey']) {
+  if (snake.total > localStorage['highestScoreKey'])
     localStorage['highestScoreKey'] = snake.total; // only strings
-  }
+
 }

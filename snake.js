@@ -90,6 +90,8 @@ function Snake() {
     this.paused = false;
     this.gameOver = false;
     this.lastDirection = -1;
+    fruit.pickLocation();
+
   };
 
   this.checkCollision = function () {
