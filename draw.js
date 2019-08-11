@@ -1,6 +1,6 @@
 const canvas = document.querySelector('.canvas');
 const context = canvas.getContext('2d');
-const scale = 30; // Size
+const scale = 20; // Size
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 var snake;

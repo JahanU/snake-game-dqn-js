@@ -1,7 +1,7 @@
 canvas {
-    background-color: blue;
     width: 100%;
     height: auto;
+    /* Scales with the screen width! */
 }
 
 
