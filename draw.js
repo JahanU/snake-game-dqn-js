@@ -26,7 +26,7 @@ var snake;
         snake.checkCollision();
       }
       document.querySelector('.score').innerText = snake.total; // Update score
-      document.querySelector('.highest_score').innerText = 'highest Score: ' + localStorage['highestScoreKey'] || '0' // Display highest Score
+      document.querySelector('.highest_score').innerText = 'highest Score: ' + localStorage['highestScoreKey'] || '00' // Display highest Score
 
     }
     if (snake.paused) {
@@ -48,8 +48,9 @@ document.onkeydown = function (event) {
 
 
 this.highestScore = function () {
-  if (localStorage['highestScoreKey'] === null)
+  if (localStorage.getItem('highestScoreKey') === null)
     localStorage['highestScoreKey'] = 0
+
   if (snake.total > localStorage['highestScoreKey'])
     localStorage['highestScoreKey'] = snake.total; // only strings
 }
