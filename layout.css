@@ -1,3 +1,11 @@
+canvas {
+    background-color: blue;
+    width: 100%;
+    height: auto;
+}
+
+
+
 .buttons {
     float: center;
     width: 85px;
