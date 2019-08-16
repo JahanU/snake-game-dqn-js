@@ -1,10 +1,10 @@
 function Snake() {
-  this.x = 0;
-  this.y = 0;
+  this.x = 32;
+  this.y = scale * 3;
   this.xSpeed = scale * 1;
   this.ySpeed = 0;
   this.total = 0;
-  this.tail = []; // Tail is an array
+  this.tail = [];
   this.paused = false;
   this.gameOver = false;
   this.lastDirection = -1;
@@ -20,7 +20,7 @@ function Snake() {
       context.lineWidth = 1;
       context.strokeStyle = '#33988C';
       context.strokeRect(this.tail[i].x, this.tail[i].y, scale, scale); //for white background
-      context.fillRect(this.tail[i].x, this.tail[i].y, scale, scale);
+      context.fillRect(this.tail[i].x, this.tail[i].y, scale, scale); // x - top left to top right, y is from top to bottom // starting Point x, point y, size, size 
     }
     context.fillRect(this.x, this.y, scale, scale);
   };
@@ -80,19 +80,6 @@ function Snake() {
     return false;
   };
 
-  this.reset = function () {
-    this.total = 0;
-    this.tail = [];
-    this.x = 0;
-    this.y = 0;
-    this.xSpeed = scale * 1;
-    this.ySpeed = 0;
-    this.paused = false;
-    this.gameOver = false;
-    this.lastDirection = -1;
-    fruit.pickLocation();
-
-  };
 
   this.checkCollision = function () {
     for (var i = 0; i < this.tail.length; i++) {
@@ -111,11 +98,24 @@ function Snake() {
   };
 
   this.collisionDetected = function () {
-    this.paused = true;
     this.gameOver = true;
-    document.querySelector('.paused').innerText = 'Game over';
+    this.paused = true;
     setTimeout(function () {
       snake.reset();
     }, 1000);
+  };
+
+  this.reset = function () {
+    this.total = 0;
+    this.tail = [];
+    this.x = 0;
+    this.y = 0;
+    this.xSpeed = scale * 1;
+    this.ySpeed = 0;
+    this.paused = false;
+    this.gameOver = false;
+    this.lastDirection = -1;
+    fruit.pickLocation();
+
   };
 } // Class end
