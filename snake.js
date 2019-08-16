@@ -10,19 +10,22 @@ function Snake() {
   this.lastDirection = -1;
 
 
+
   // Context is getting the context from the 2D canvas
   this.draw = function () {
-    context.fillStyle = '#DEE2E3';
-    context.lineWidth = 1;
-    context.strokeStyle = '#33988C';
+    context.fillStyle = '#58D68D';
+    context.strokeStyle = 'white';
 
     for (let i = 0; i < this.tail.length; i++) {
-      context.lineWidth = 1;
-      context.strokeStyle = '#33988C';
-      context.strokeRect(this.tail[i].x, this.tail[i].y, scale, scale); //for white background
-      context.fillRect(this.tail[i].x, this.tail[i].y, scale, scale); // x - top left to top right, y is from top to bottom // starting Point x, point y, size, size 
+      context.beginPath();
+      context.arc(this.tail[i].x + 16, this.tail[i].y + 16, 15, 0, 2 * Math.PI);
+      context.fill()
+      context.stroke();
     }
-    context.fillRect(this.x, this.y, scale, scale);
+    context.beginPath();
+    context.arc(this.x + 16, this.y + 16, 15, 0, 2 * Math.PI);
+    context.fill()
+    context.stroke();
   };
 
   this.update = function () {
@@ -87,12 +90,7 @@ function Snake() {
         this.collisionDetected();
       }
     }
-    if (
-      this.x >= canvas.width ||
-      this.y >= canvas.height ||
-      this.x < 0 ||
-      this.y < 0
-    ) {
+    if (this.x >= canvas.width || this.y >= canvas.height || this.x < 0 || this.y < scale * 2) {
       this.collisionDetected();
     }
   };
@@ -108,8 +106,8 @@ function Snake() {
   this.reset = function () {
     this.total = 0;
     this.tail = [];
-    this.x = 0;
-    this.y = 0;
+    this.x = 32;
+    this.y = scale * 3;
     this.xSpeed = scale * 1;
     this.ySpeed = 0;
     this.paused = false;

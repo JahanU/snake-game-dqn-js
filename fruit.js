@@ -9,12 +9,12 @@ function Fruit() {
 
   this.draw = function () {
     // Draw fruit
-    context.fillStyle = '#ACE3D0';
-    context.fillRect(this.x, this.y, scale, scale);
-
-    // extras
-    // context.lineWidth = 5;
-    // context.strokeStyle = '#33998C';
-    // context.strokeRect(0, 0, canvas.width, canvas.height); //for white background
+    context.fillStyle = '#cc0000';
+    context.lineWidth = 1;
+    context.strokeStyle = '#17202A';
+    context.beginPath();
+    context.arc(this.x + 16, this.y + 16, 15, 0, 2 * Math.PI);
+    context.fill()
+    context.stroke();
   };
 }

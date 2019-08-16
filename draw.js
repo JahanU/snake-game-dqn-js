@@ -12,12 +12,17 @@ function setup() {
   fruit = new Fruit();
   groundImage = new Image();
   groundImage.src = 'ground.png';
-  context.fillStyle = "white";
+  context.fillStyle = 'white';
   context.font = '26px Changa one';
   fruit.pickLocation(); // Choose random location
 }; // double bracket at the end makes it run
 
 setup();
+
+function showTitle() {
+  context.fillStyle = 'white';
+  context.fillText(this.title, rows * 4, columns * 2.5);
+}
 
 
 function updateGame() {
@@ -28,23 +33,23 @@ function updateGame() {
 
   if (snake.paused == false) {
     snake.update();
+    this.showTitle();
 
     this.title = 'Highest Score: ' + localStorage['highestScoreKey'] || '0';
-    context.fillText(this.title, rows * 4, columns * 3);
 
     snake.eat(fruit) ? fruit.pickLocation() : snake.checkCollision();
     document.querySelector('.score').innerHTML = snake.total; // Update score
 
     this.title = 'Highest Score: ' + localStorage['highestScoreKey'] || '0'; // Display highest Score
-    context.fillText(this.title, rows * 4, columns * 3);
+    context.fillText(this.title, rows * 4, columns * 2.5);
   }
   if (snake.paused & !snake.gameOver) {
     this.title = 'Highest Score: ' + localStorage['highestScoreKey'] + ' Paused';
-    context.fillText(this.title, rows * 4, columns * 3);
-  }
-  if (snake.gameOver && snake.paused) {
+    this.showTitle();
+
+  } else if (snake.gameOver && snake.paused) {
     this.title = 'Highest Score: ' + localStorage['highestScoreKey'] + ' Game Over';
-    context.fillText(this.title, rows * 4, columns * 3);
+    this.showTitle();
     this.highestScore();
   }
 }
