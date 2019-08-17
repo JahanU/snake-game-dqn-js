@@ -8,6 +8,9 @@ let fruit;
 let title;
 // Init function, setup objects
 function setup() {
+  alert(
+    'Snake Game written with Javascript!\nYou can use the arrow keys and the "P" button to pause and resume the game.'
+  );
   snake = new Snake(); // Init objects
   fruit = new Fruit();
   groundImage = new Image();
@@ -15,7 +18,7 @@ function setup() {
   context.fillStyle = 'white';
   context.font = '26px Changa one';
   fruit.pickLocation(); // Choose random location
-}; // double bracket at the end makes it run
+} // double bracket at the end makes it run
 
 setup();
 
@@ -23,7 +26,6 @@ function showTitle() {
   context.fillStyle = 'white';
   context.fillText(this.title, rows * 4, columns * 2.5);
 }
-
 
 function updateGame() {
   context.drawImage(groundImage, 0, 0);
@@ -44,11 +46,12 @@ function updateGame() {
     context.fillText(this.title, rows * 4, columns * 2.5);
   }
   if (snake.paused & !snake.gameOver) {
-    this.title = 'Highest Score: ' + localStorage['highestScoreKey'] + ' Paused';
+    this.title =
+      'Highest Score: ' + localStorage['highestScoreKey'] + ' Paused';
     this.showTitle();
-
   } else if (snake.gameOver && snake.paused) {
-    this.title = 'Highest Score: ' + localStorage['highestScoreKey'] + ' Game Over';
+    this.title =
+      'Highest Score: ' + localStorage['highestScoreKey'] + ' Game Over';
     this.showTitle();
     this.highestScore();
   }
@@ -57,11 +60,11 @@ function updateGame() {
 window.setInterval(this.updateGame, 110); // Speed, update frames rate
 
 // Pass any action from the keyboard to change the snake direction
-document.onkeydown = function (event) {
+document.onkeydown = function(event) {
   snake.changeDirection(event.keyCode); // Convert keyboard action to number
 };
 
-this.highestScore = function () {
+this.highestScore = function() {
   if (localStorage.getItem('highestScoreKey') === null)
     localStorage['highestScoreKey'] = 0;
 
