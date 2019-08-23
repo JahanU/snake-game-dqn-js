@@ -7,40 +7,69 @@
 /* ================================================================== */
 
 
-
 /* screenwidth less than 1024px
 --------------------------------------------------------------------- */
+@media only screen and (min-width: 1024px) {
 
-/* Monitors!!  */
-@media only screen and (min-width: 900px) {
     .button-layout {
         width: 66%;
     }
 
     .middle-btn {
-        width: 300%;
-        width: 2200px;
-        margin-left: 190px;
+        display: flex;
+        justify-content: center;
+        margin-left: 25%;
+    }
+}
+
+
+/* screenwidth less than 1024px // Ipad pro
+--------------------------------------------------------------------- */
+@media only screen and (max-width: 1024px) {
+
+    .button-layout {
+        width: 100%;
     }
 
+    .middle-btn {
+        display: flex;
+        justify-content: center;
+        margin-left: 25%;
+    }
 }
 
 
 
-/* screenwidth less than 900px
+
+/* screenwidth less than 900px // Iphone X and below
+/* mobile wide/smaller tablets / Ipad
 --------------------------------------------------------------------- */
+@media only screen and (max-width: 900px) {
 
-@media only screen and (max-width: 900px) {}
+    .button-layout {
+        width: 100%;
+    }
 
+    .middle-btn {
+        display: flex;
+        justify-content: center;
+        margin-left: 25%;
 
-
-/* mobile wide/smaller tablets
----------------------------------------------------------------------- */
-
-@media only screen and (max-width: 767px) {}
+    }
+}
 
 
 /* mobile narrow
   -------------------------------------------------------------------------- */
+@media only screen and (max-width: 480px) {
+    .button-layout {
+        width: 100%;
+    }
 
-@media only screen and (max-width: 480px) {}
+    .middle-btn {
+        display: flex;
+        justify-content: center;
+        margin-left: 0%;
+
+    }
+}

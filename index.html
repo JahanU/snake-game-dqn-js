@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12 col-xl-8 content">
-              <h1 class="score"></h1> 
+          <hr>
               <canvas
                 class="canvas"
                 height="608"
@@ -28,13 +28,14 @@
         </div>
 
         <div class="button-layout">
+          <hr>
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12 content up">
                 <button class="buttons" onclick="snake.changeDirection(38)">&#x2191;</button>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6 content middle-btn">
-                <button class="buttons" onclick="snake.changeDirection(37)">&#x2190;</button>
-                <button class="buttons" onclick="snake.changeDirection(39)">&#x2192;</button>
+                <button class="buttons right-btn" onclick="snake.changeDirection(37)">&#x2190;</button>
+                <button class="buttons left-btn" onclick="snake.changeDirection(39)">&#x2192;</button>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 content down-btn">
                 <button class="buttons" onclick="snake.changeDirection(40)">&#x2193;</button>

@@ -4,17 +4,25 @@ canvas {
     /* Scales with the screen width! */
 }
 
+hr {
+    margin: 5px;
+}
+
 .button-layout {
     width: 100%;
     margin: 6px 0px 6px 0px;
 }
 
 .buttons {
+    border: none;
     background: #DEE2E3;
-    margin: 6px 0px 6px 0px;
+    margin: 10px 0px 10px 0px;
     width: 100%;
-    height: 40px;
-    font-size: 20px;
+    height: 60px;
+    font-size: 30px;
+    border-radius: 12%;
+    box-shadow: 2px 2px 5px #888888;
+
 
 }
 
@@ -26,6 +34,10 @@ canvas {
 .middle-btn {
     display: flex;
     justify-content: center;
+}
+
+.right-btn {
+    margin-right: 30px;
 }
 
 .down-btn {

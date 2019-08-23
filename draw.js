@@ -5,26 +5,45 @@ const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 let snake;
 let fruit;
-let title;
+
 // Init function, setup objects
 function setup() {
-  alert(
-    'Snake Game written with Javascript!\nYou can use the arrow keys and the "P" button to pause and resume the game.'
-  );
+  // alert(
+  //   'Snake Game written with Javascript!\nYou can use the arrow keys and the "P" button to pause and resume the game.'
+  // );
   snake = new Snake(); // Init objects
   fruit = new Fruit();
   groundImage = new Image();
   groundImage.src = 'ground.png';
   context.fillStyle = 'white';
-  context.font = '26px Changa one';
+  context.font = '26px sans-serif';
   fruit.pickLocation(); // Choose random location
 } // double bracket at the end makes it run
 
 setup();
 
-function showTitle() {
+function showTitle(displayScore) {
   context.fillStyle = 'white';
-  context.fillText(this.title, rows * 4, columns * 2.5);
+  context.font = '26px sans-serif';
+  context.fillText(displayScore, rows * 2, columns * 2.5);
+}
+
+function showGameState(displayMessage, colour, xpos, ypos) {
+  context.fillStyle = colour;
+  context.strokeStyle = 'black';
+
+  context.font = '80px sans-serif';
+  context.fillText(displayMessage, canvas.width / xpos, canvas.height / ypos);
+  context.strokeText(displayMessage, canvas.width / xpos, canvas.height / ypos);
+  context.fill();
+  context.stroke();
+
+  for (let i = 0; i < snake.tail.length; i++) {
+    context.beginPath();
+    context.arc(snake.tail[i].x + 16, snake.tail[i].y + 16, 15, 0, 2 * Math.PI);
+    context.fill()
+    context.stroke();
+  }
 }
 
 function updateGame() {
@@ -32,27 +51,25 @@ function updateGame() {
 
   fruit.draw();
   snake.draw();
+  let displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0'
 
   if (snake.paused == false) {
     snake.update();
-    this.showTitle();
 
-    this.title = 'Highest Score: ' + localStorage['highestScoreKey'] || '0';
+    this.showTitle(displayScore);
 
     snake.eat(fruit) ? fruit.pickLocation() : snake.checkCollision();
-    document.querySelector('.score').innerHTML = snake.total; // Update score
 
-    this.title = 'Highest Score: ' + localStorage['highestScoreKey'] || '0'; // Display highest Score
-    context.fillText(this.title, rows * 4, columns * 2.5);
+    this.showTitle(displayScore);
   }
   if (snake.paused & !snake.gameOver) {
-    this.title =
-      'Highest Score: ' + localStorage['highestScoreKey'] + ' Paused';
-    this.showTitle();
+    displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey']
+    this.showTitle(displayScore);
+    this.showGameState('Paused', 'yellow', 3.5, 1.75);
   } else if (snake.gameOver && snake.paused) {
-    this.title =
-      'Highest Score: ' + localStorage['highestScoreKey'] + ' Game Over';
-    this.showTitle();
+    this.title = snake.total + '   Highest Score: ' + localStorage['highestScoreKey']
+    this.showTitle(displayScore);
+    this.showGameState('GAME OVER', 'red', 9.2, 1.75);
     this.highestScore();
   }
 }
@@ -60,11 +77,11 @@ function updateGame() {
 window.setInterval(this.updateGame, 110); // Speed, update frames rate
 
 // Pass any action from the keyboard to change the snake direction
-document.onkeydown = function(event) {
+document.onkeydown = function (event) {
   snake.changeDirection(event.keyCode); // Convert keyboard action to number
 };
 
-this.highestScore = function() {
+this.highestScore = function () {
   if (localStorage.getItem('highestScoreKey') === null)
     localStorage['highestScoreKey'] = 0;
 
