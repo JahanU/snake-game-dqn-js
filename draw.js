@@ -60,7 +60,6 @@ function updateGame() {
 
     snake.eat(fruit) ? fruit.pickLocation() : snake.checkCollision();
 
-    this.showTitle(displayScore);
   }
   if (snake.paused & !snake.gameOver) {
     displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey']
