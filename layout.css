@@ -22,8 +22,6 @@ hr {
     font-size: 30px;
     border-radius: 12%;
     box-shadow: 2px 2px 5px #888888;
-
-
 }
 
 .up-btn {
@@ -45,7 +43,7 @@ hr {
     justify-content: center;
 }
 
-.pause-btn {
+.settings-btn {
     display: flex;
     justify-content: center;
     margin-top: 3%;

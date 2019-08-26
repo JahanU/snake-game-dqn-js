@@ -15,11 +15,14 @@
         width: 66%;
     }
 
-    .middle-btn {
+    .middle-btn,
+    .settings-btn {
         display: flex;
         justify-content: center;
         margin-left: 25%;
     }
+
+
 }
 
 
@@ -31,7 +34,8 @@
         width: 100%;
     }
 
-    .middle-btn {
+    .middle-btn,
+    .settings-btn {
         display: flex;
         justify-content: center;
         margin-left: 25%;
@@ -50,7 +54,8 @@
         width: 100%;
     }
 
-    .middle-btn {
+    .middle-btn,
+    .settings-btn {
         display: flex;
         justify-content: center;
         margin-left: 25%;
@@ -66,7 +71,8 @@
         width: 100%;
     }
 
-    .middle-btn {
+    .middle-btn,
+    .settings-btn {
         display: flex;
         justify-content: center;
         margin-left: 0%;

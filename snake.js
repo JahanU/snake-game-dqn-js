@@ -10,7 +10,7 @@
     this.paused = false;
     this.gameOver = false;
     this.lastDirection = -1;
-
+    this.toggleSound = false;
 
     // Context is getting the context from the 2D canvas
     this.draw = function () {
@@ -23,6 +23,7 @@
         context.fill()
         context.stroke();
       }
+
       context.beginPath();
       context.arc(this.x + 16, this.y + 16, 15, 0, 2 * Math.PI);
       context.fill()
@@ -46,7 +47,7 @@
       if (direction != 80) {
         this.lastDirection = direction;
       }
-      var pause = new Audio('audio/paused.ogg');
+      var paused = new Audio('audio/paused.ogg');
       var left = new Audio('audio/left.mp3');
       var up = new Audio('audio/up.mp3');
       var right = new Audio('audio/right.mp3');
@@ -54,34 +55,36 @@
       // Convert keyboard action to number
       switch (direction) {
         case 37: // LEFT
-          left.play();
+          this.toggleSound ? left.play() : left.pause();
           this.xSpeed = -scale * 1;
           this.ySpeed = 0;
           break;
         case 38: // UP
-          up.play();
+          this.toggleSound ? up.play() : up.pause();
           this.xSpeed = 0;
           this.ySpeed = -scale * 1;
           break;
         case 39: // RIGHT
-          right.play();
+          this.toggleSound ? right.play() : right.pause();
           this.xSpeed = scale * 1;
           this.ySpeed = 0;
           break;
         case 40: // DOWN
-          down.play();
+          this.toggleSound ? down.play() : down.pause();
           this.xSpeed = 0;
           this.ySpeed = scale * 1;
           break;
         case 80:
-          pause.play();
           this.paused = !this.paused; // Opposite value
-          if (this.paused) {
-            break;
-          } else {
-            this.changeDirection(this.lastDirection);
+          if (this.paused == false) {
+            this.changeDirection(this.lastDirecption);
             break;
           }
+          case 81:
+            this.toggleSound = !this.toggleSound
+            let soundEmoji = (this.toggleSound) ? String.fromCodePoint(0x1F508) : String.fromCodePoint(0x1F507);
+            document.getElementById("sound-btn").innerText = soundEmoji
+            this.toggleSound ? paused.play() : paused.pause();
       }
     };
 
@@ -90,7 +93,7 @@
       if (this.x === fruit.x && this.y === fruit.y) {
         this.total++;
         var eat = new Audio('audio/eat.mp3');
-        eat.play();
+        this.toggleSound ? eat.play() : eat.pause();
         return true;
       }
       return false;
@@ -112,7 +115,9 @@
       this.gameOver = true;
       this.paused = true;
       var dead = new Audio('audio/dead.mp3');
-      dead.play();
+      this.toggleSound ? dead.play() : dead.pause();
+
+
       setTimeout(function () {
         snake.reset();
       }, 1000);
@@ -131,8 +136,6 @@
       fruit.pickLocation();
 
     };
-
-
 
 
   } // Class end
