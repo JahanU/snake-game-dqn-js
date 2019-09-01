@@ -1,5 +1,4 @@
   // Initalise sounds:
-
   function Snake() {
     this.x = 32;
     this.y = scale * 3;
@@ -136,6 +135,9 @@
       fruit.pickLocation();
 
     };
+
+
+
 
 
   } // Class end

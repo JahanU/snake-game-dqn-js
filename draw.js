@@ -5,7 +5,6 @@ const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 let snake;
 let fruit;
-
 // Init function, setup objects
 function setup() {
   // alert(
@@ -17,11 +16,10 @@ function setup() {
   groundImage.src = 'ground.png';
   context.fillStyle = 'white';
   context.font = '26px sans-serif';
-
   fruit.pickLocation(); // Choose random location
+  if (localStorage.getItem('highestScoreKey') === null)
+    localStorage['highestScoreKey'] = 0;
 }
-
-// double bracket at the end makes it run
 
 setup();
 
@@ -44,52 +42,46 @@ function showGameState(displayMessage, colour, xpos, ypos) {
   for (let i = 0; i < snake.tail.length; i++) {
     context.beginPath();
     context.arc(snake.tail[i].x + 16, snake.tail[i].y + 16, 15, 0, 2 * Math.PI);
-    context.fill()
+    context.fill();
     context.stroke();
   }
 }
 
 function updateGame() {
   context.drawImage(groundImage, 0, 0);
-
   fruit.draw();
   snake.draw();
-  let displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0'
+
+  let displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0';
 
   if (snake.paused == false) {
     snake.update();
     this.showTitle(displayScore);
 
     snake.eat(fruit) ? fruit.pickLocation() : snake.checkCollision();
-
-
   }
 
   if (snake.paused & !snake.gameOver) {
-    displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey']
+    displayScore =
+      snake.total + '   Highest Score: ' + localStorage['highestScoreKey'];
     showTitle(displayScore);
     this.showGameState('Paused', 'yellow', 3.5, 1.75);
   } else if (snake.gameOver && snake.paused) {
-    this.title = snake.total + '   Highest Score: ' + localStorage['highestScoreKey']
+    this.title =
+      snake.total + '   Highest Score: ' + localStorage['highestScoreKey'];
     showTitle(displayScore);
     this.showGameState('GAME OVER', 'red', 9.2, 1.75);
     this.highestScore();
   }
 }
-
 window.setInterval(this.updateGame, 110); // Speed, update frames rate
 
 // Pass any action from the keyboard to change the snake direction
 document.onkeydown = function (event) {
   snake.changeDirection(event.keyCode); // Convert keyboard action to number
-}
-
-;
+};
 
 this.highestScore = function () {
-  if (localStorage.getItem('highestScoreKey') === null) localStorage['highestScoreKey'] = 0;
-
-  if (snake.total > localStorage['highestScoreKey']) localStorage['highestScoreKey'] = snake.total; // only strings
-}
-
-;
+  if (snake.total > localStorage['highestScoreKey'])
+    localStorage['highestScoreKey'] = snake.total; // only strings
+};
