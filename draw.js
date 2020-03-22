@@ -14,8 +14,8 @@ let neighboursCells = 2; // 2
 let size = 32;
 
 let spec = {
-  inputMode: inputMode, // 1
-  neighboursCells: neighboursCells, //Neighbour cells. 1 => 9 cells, 2 => 25 cells ...
+  inputMode: inputMode, //1
+  neighboursCells: neighboursCells, //Neighbour cells. 1 => 9 cells, 2 => 25 cells...
   size: size,
   update: 'qlearn',
   gamma: 0.9,
@@ -26,6 +26,7 @@ let spec = {
   num_hidden_units: 100
 };
 
+setup();
 // Init function, setup objects
 function setup() {
   snake = new Snake();
@@ -39,7 +40,6 @@ function setup() {
   if (localStorage.getItem('highestScoreKey') === null)
     localStorage['highestScoreKey'] = 0;
 }
-setup();
 
 function showTitle(displayScore) {
   context.fillStyle = 'white';
@@ -72,11 +72,11 @@ function updateGame() {
   context.drawImage(groundImage, 0, 0);
   fruit.draw();
   snake.draw();
-
-  let displayScore = snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0';
+  let displayScore =
+    snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0';
 
   if (snake.paused == false) {
-    snake.update();
+    snake.update(); // Update frame
     this.showTitle(displayScore);
     agent.trainAgent();
     agent.showAgentStats();
@@ -84,7 +84,7 @@ function updateGame() {
     this.onPaused();
   }
 }
-window.setInterval(this.updateGame, 90); // Speed, update frames rate
+window.setInterval(this.updateGame, 60); // Speed, update frames rate
 
 function onPaused() {
   if (snake.paused && !snake.gameOver) {
@@ -97,7 +97,7 @@ function onPaused() {
   }
 }
 
-document.onkeydown = function (event) {
+document.onkeydown = function(event) {
   // keyCode = Convert keyboard action to number
   // pause and aresound are both 80, 81
   if (event.keyCode >= 79) {

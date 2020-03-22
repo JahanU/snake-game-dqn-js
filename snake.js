@@ -11,8 +11,28 @@ const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 
+
+class Snake {
+  constructor(x, y, worldX, worldY) {
+    this._world = {
+      x: worldX,
+      y: worldY
+    };
+    this._snake = [
+      {
+        x: x,
+        y: y
+      },
+      {
+        x: x - 1,
+        y: y
+      }
+    ];
+  }
+
+}
 function Snake() {
-  this.x = 32;
+  this.x = scale;
   this.y = scale * 3;
   this.xSpeed = scale * 1;
   this.ySpeed = 0;
@@ -135,9 +155,6 @@ function Snake() {
     this.gameOver = true;
     this.paused = true;
     this.toggleSound ? DEAD.play() : DEAD.pause();
-    // setTimeout(function () {
-    //   snake.reset();
-    // }, 1000);
     snake.reset();
   };
 
@@ -156,9 +173,10 @@ function Snake() {
 
   // AI:
   this.getDistanceToFruit = function() {
-    let xDis = this.x - fruit.x;
-    let yDis = this.y - fruit.y;
-    return Math.sqrt(xDis * xDis + yDis * yDis); // Math.pow(x) +  Math.pow(y)
+    let x = this.tail[this.tail.length - 1].x - fruit.x;
+    let y = this.tail[this.tail.length - 1].y - fruit.y;
+    console.log(x, y);
+    return Math.sqrt(x * x + y * y);
   };
 
   this.getAngleToFruit = function() {
