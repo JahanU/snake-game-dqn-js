@@ -11,26 +11,6 @@ const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 
-
-class Snake {
-  constructor(x, y, worldX, worldY) {
-    this._world = {
-      x: worldX,
-      y: worldY
-    };
-    this._snake = [
-      {
-        x: x,
-        y: y
-      },
-      {
-        x: x - 1,
-        y: y
-      }
-    ];
-  }
-
-}
 function Snake() {
   this.x = scale;
   this.y = scale * 3;
