@@ -84,7 +84,7 @@ function updateGame() {
     this.onPaused();
   }
 }
-window.setInterval(this.updateGame, 1); // Speed, update frames rate
+window.setInterval(this.updateGame, 60); // Speed, update frames rate
 
 function onPaused() {
   if (!snake.gameOver) {
