@@ -7,16 +7,17 @@ class Agent {
     this.spec = spec;
 
     this.env = {
-      getNumStates: function() {
+      getNumStates: function () {
         return 2 + Math.pow(1 + 2 * spec.neighboursCells, 2); // 27
       },
-      getMaxNumActions: function() {
+      getMaxNumActions: function () {
         return 4;
       }
     };
 
     // create the DQN agent
     this.agent = new RL.DQNAgent(this.env, this.spec);
+    console.log(this.agent)
 
     this.rewards = {
       apple: 100.0,
@@ -32,7 +33,7 @@ class Agent {
       totGamesMeanReward: 0,
       totGamesMinReward: 9999999,
       totGamesMaxReward: -999999,
-      recordReward: function() {
+      recordReward: function () {
         this.nGames++;
         this.totGamesReward += this.gameReward;
         this.totGamesMeanReward = this.totGamesReward / this.nGames;
@@ -57,7 +58,8 @@ class Agent {
     let direction = agent.getBrainDecision();
     snake.agentMoveSnake(direction);
     let reward = agent.getReward();
-    var res = 0;
+    let res = 0;
+
     if (snake.eat(fruit)) {
       fruit.pickLocation();
       res = 1;
@@ -89,9 +91,7 @@ class Agent {
   getBrainDecision() {
     let input = []; // Stores game episode to learn from
     input.push(map(snake.getAngleToFruit(), -180, 180, 0, 1));
-    input.push(
-      map(snake.getDistanceToFruit(), 0, Math.sqrt(2 * (size * size)), 0, 1)
-    );
+    input.push(map(snake.getDistanceToFruit(), 0, Math.sqrt(2 * (size * size)), 0, 1));
     let action = agent.act(input); // Act based on batch data
     // Here we are storying past plays so that the agent can learn and improve
     return action;

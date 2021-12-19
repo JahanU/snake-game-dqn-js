@@ -24,7 +24,7 @@ function Snake() {
   this.toggleSound = false;
 
   // Context is getting the context from the 2D canvas
-  this.draw = function() {
+  this.draw = function () {
     context.fillStyle = '#58D68D';
     context.strokeStyle = 'white';
 
@@ -41,7 +41,7 @@ function Snake() {
     context.stroke();
   };
 
-  this.update = function() {
+  this.update = function () {
     for (let i = 0; i < this.tail.length - 1; i++) {
       this.tail[i] = this.tail[i + 1];
     }
@@ -54,9 +54,8 @@ function Snake() {
     this.y += this.ySpeed;
   };
 
-  this.changeDirection = function(direction) {
+  this.changeDirection = function (direction) {
     this.lastDirection = direction;
-
     // Convert keyboard action to number
     switch (direction) {
       case LEFT: // LEFT
@@ -82,28 +81,28 @@ function Snake() {
     }
   };
 
-  this.agentMoveSnake = function(direction) {
+  this.agentMoveSnake = function (direction) {
     if (this.lastDirection != direction) {
       this.changeDirection(direction);
     }
   };
 
-  this.toggleButtons = function(direction) {
+  this.toggleButtons = function (direction) {
     switch (direction) {
-      case 79: // O
+      case 79: // O = audio
         this.toggleSound = !this.toggleSound;
         let soundEmoji = this.toggleSound
           ? String.fromCodePoint(0x1f508)
           : String.fromCodePoint(0x1f507);
         document.getElementById('sound-btn').innerText = soundEmoji;
         this.toggleSound ? PAUSEDSOUND.play() : PAUSEDSOUND.pause();
-      case 80: // P
-        this.paused = !this.paused; // Opposite value
+      case 80: // P = pause
+        this.paused = !this.paused;
         this.toggleSound = !this.toggleSound;
     }
   };
 
-  this.eat = function(fruit) {
+  this.eat = function (fruit) {
     if (this.x === fruit.x && this.y === fruit.y) {
       this.total++;
       this.toggleSound ? EAT.play() : EAT.pause();
@@ -112,7 +111,7 @@ function Snake() {
     return false;
   };
 
-  this.checkCollision = function() {
+  this.checkCollision = function () {
     for (var i = 0; i < this.tail.length; i++) {
       if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
         this.collisionDetected();
@@ -131,14 +130,14 @@ function Snake() {
     return false;
   };
 
-  this.collisionDetected = function() {
+  this.collisionDetected = function () {
     this.gameOver = true;
     this.paused = true;
     this.toggleSound ? DEAD.play() : DEAD.pause();
     snake.reset();
   };
 
-  this.reset = function() {
+  this.reset = function () {
     this.total = 0;
     this.tail = [];
     this.x = 32;
@@ -152,14 +151,13 @@ function Snake() {
   };
 
   // AI:
-  this.getDistanceToFruit = function() {
+  this.getDistanceToFruit = function () {
     let x = this.tail[this.tail.length - 1].x - fruit.x;
     let y = this.tail[this.tail.length - 1].y - fruit.y;
-    console.log(x, y);
     return Math.sqrt(x * x + y * y);
   };
 
-  this.getAngleToFruit = function() {
+  this.getAngleToFruit = function () {
     let deltaX = this.x - fruit.x;
     let deltaY = this.y - fruit.y;
     return (Math.atan2(deltaY, deltaX) * 180) / PI;

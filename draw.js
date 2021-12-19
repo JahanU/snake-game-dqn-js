@@ -26,7 +26,6 @@ let spec = {
   num_hidden_units: 100
 };
 
-setup();
 // Init function, setup objects
 function setup() {
   snake = new Snake();
@@ -73,36 +72,35 @@ function updateGame() {
   fruit.draw();
   snake.draw();
   let displayScore =
-    snake.total + '   Highest Score: ' + localStorage['highestScoreKey'] || '0';
+    snake.total + '   Highest Score: ' + Math.max(snake.total, localStorage['highestScoreKey']);
 
   if (snake.paused == false) {
     snake.update(); // Update frame
     this.showTitle(displayScore);
     agent.trainAgent();
     agent.showAgentStats();
+    this.highestScore();
   } else {
     this.onPaused();
   }
 }
-window.setInterval(this.updateGame, 60); // Speed, update frames rate
+window.setInterval(this.updateGame, 1); // Speed, update frames rate
 
 function onPaused() {
-  if (snake.paused && !snake.gameOver) {
+  if (!snake.gameOver) {
     displayScore =
-      snake.total + '   Highest Score: ' + localStorage['highestScoreKey'];
+      snake.total + '   Highest Score: ' + Math.max(snake.total, localStorage['highestScoreKey']);
     showTitle(displayScore);
     this.showGameState('Paused', 'yellow', 3.5, 1.75);
-  } else if (snake.gameOver && snake.paused) {
-    this.highestScore();
   }
 }
 
-document.onkeydown = function(event) {
+document.onkeydown = function (event) {
   // keyCode = Convert keyboard action to number
-  // pause and aresound are both 80, 81
-  if (event.keyCode >= 79) {
+  if (event.keyCode >= 79) {   // pause = 80, sound = 79
     snake.toggleButtons(event.keyCode);
-  } else {
+  }
+  else { // Before AI was implemented, could control snake
     snake.changeDirection(event.keyCode);
   }
 };
