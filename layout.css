@@ -1,11 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    background-color: #0b0f19;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    color: #f8fafc;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
 canvas {
     width: 100%;
     height: auto;
-    /* Scales with the screen width! */
+    border-radius: 12px;
 }
 
 hr {
-    margin: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin: 15px 0;
+}
+
+.card {
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: #94a3b8 !important;
+}
+
+.text-muted {
+    color: #64748b !important;
+}
+
+/* Custom range styling */
+.custom-range {
+    height: 1.4rem;
+    padding: 0;
+    background-color: transparent;
+}
+
+.custom-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #1e293b;
+    border-radius: 3px;
+    border: none;
+}
+
+.custom-range::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -5px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.custom-range::-webkit-slider-thumb:hover {
+    background: #60a5fa;
+    transform: scale(1.2);
+}
+
+.custom-range::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #1e293b;
+    border-radius: 3px;
+}
+
+.custom-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .button-layout {

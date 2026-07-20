@@ -1,3 +1,18 @@
+function drawRoundedRect(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
 function Fruit() {
   this.x;
   this.y;
@@ -13,13 +28,13 @@ function Fruit() {
   };
 
   this.draw = function() {
-    // Draw fruit
-    context.fillStyle = '#cc0000';
-    context.strokeStyle = '#17202A';
+    // Draw beautiful glowing neon rose fruit
+    context.shadowBlur = 12;
+    context.shadowColor = '#f43f5e';
+    context.fillStyle = '#f43f5e';
 
-    context.beginPath();
-    context.arc(this.x + 16, this.y + 16, 15, 0, 2 * Math.PI);
-    context.fill();
-    context.stroke();
+    drawRoundedRect(context, this.x + 4, this.y + 4, scale - 8, scale - 8, 4);
+
+    context.shadowBlur = 0;
   };
 }

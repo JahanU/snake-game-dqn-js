@@ -25,20 +25,25 @@ function Snake() {
 
   // Context is getting the context from the 2D canvas
   this.draw = function () {
-    context.fillStyle = '#58D68D';
-    context.strokeStyle = 'white';
-
+    // Glow effect
+    context.shadowBlur = 10;
+    
+    // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
-      context.beginPath();
-      context.arc(this.tail[i].x + 16, this.tail[i].y + 16, 15, 0, 2 * Math.PI);
-      context.fill();
-      context.stroke();
+      // Calculate fade ratio
+      let ratio = (i + 1) / (this.tail.length + 1);
+      context.fillStyle = `rgba(0, 242, 254, ${0.35 + 0.65 * ratio})`;
+      context.shadowColor = '#00f2fe';
+      drawRoundedRect(context, this.tail[i].x + 2, this.tail[i].y + 2, scale - 4, scale - 4, 6);
     }
 
-    context.beginPath();
-    context.arc(this.x + 16, this.y + 16, 15, 0, 2 * Math.PI);
-    context.fill();
-    context.stroke();
+    // Draw head
+    context.fillStyle = '#3b82f6';
+    context.shadowColor = '#3b82f6';
+    drawRoundedRect(context, this.x + 2, this.y + 2, scale - 4, scale - 4, 8);
+    
+    // Reset shadow
+    context.shadowBlur = 0;
   };
 
   this.update = function () {

@@ -31,8 +31,6 @@ function setup() {
   snake = new Snake();
   fruit = new Fruit();
   agent = new Agent(spec);
-  groundImage = new Image();
-  groundImage.src = 'ground.png';
   context.fillStyle = 'white';
   context.font = '26px sans-serif';
   fruit.pickLocation(); // Choose random location
@@ -41,9 +39,29 @@ function setup() {
 }
 
 function showTitle(displayScore) {
-  context.fillStyle = 'white';
-  context.font = '26px sans-serif';
-  context.fillText(displayScore, rows * 2, columns * 2.5);
+  // Redraw header area background
+  context.fillStyle = '#1e293b'; 
+  context.fillRect(0, 0, canvas.width, scale * 2);
+
+  // Header bottom border
+  context.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+  context.lineWidth = 1;
+  context.beginPath();
+  context.moveTo(0, scale * 2);
+  context.lineTo(canvas.width, scale * 2);
+  context.stroke();
+
+  // Draw title text
+  context.fillStyle = '#38bdf8'; 
+  context.font = 'bold 18px "Inter", sans-serif';
+  context.fillText("SNAKE DQN AI", 20, scale + 6);
+
+  // Draw score text
+  context.fillStyle = '#e2e8f0'; 
+  context.font = '16px "Inter", sans-serif';
+  context.textAlign = 'right';
+  context.fillText(displayScore, canvas.width - 20, scale + 6);
+  context.textAlign = 'left'; // restore alignment
 }
 
 function showGameState(displayMessage, colour, xpos, ypos) {
@@ -68,11 +86,24 @@ function updateSnakeColour() {
 
 // Runs game // MAIN
 function updateGame() {
-  context.drawImage(groundImage, 0, 0);
+  // Draw sleek dark slate board
+  context.fillStyle = '#0f172a';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw grid checkered squares
+  for (let r = 2; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      if ((r + c) % 2 === 0) {
+        context.fillStyle = '#0b0f19'; // Slightly darker square
+        context.fillRect(c * scale, r * scale, scale, scale);
+      }
+    }
+  }
+
   fruit.draw();
   snake.draw();
   let displayScore =
-    snake.total + '   Highest Score: ' + Math.max(snake.total, localStorage['highestScoreKey']);
+    'Score: ' + snake.total + '  |  Record: ' + Math.max(snake.total, localStorage['highestScoreKey']);
 
   if (snake.paused == false) {
     snake.update(); // Update frame
