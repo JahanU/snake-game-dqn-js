@@ -13,28 +13,40 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
   ctx.fill();
 }
 
-function Fruit() {
+function Fruit(canvas, context, scale, snake) {
+  this.canvas = canvas;
+  this.context = context;
+  this.scale = scale;
+  this.snake = snake;
   this.x;
   this.y;
+  
   // Assign the fruit class the position X and Y in this init method
   this.pickLocation = function() {
-    this.x = Math.floor(Math.random() * 17 + 1) * scale;
-    this.y = Math.floor(Math.random() * 15 + 3) * scale;
+    let columnsCount = this.canvas.width / this.scale;
+    let rowsCount = this.canvas.height / this.scale;
+    
+    let minX = 1;
+    let maxX = columnsCount - 2;
+    this.x = Math.floor(Math.random() * (maxX - minX + 1) + minX) * this.scale;
 
-    if (this.x == snake.x && this.y == snake.y) {
-      this.x = Math.floor(Math.random() * 17 + 1) * scale;
-      this.y = Math.floor(Math.random() * 15 + 3) * scale;
+    let minY = 3;
+    let maxY = rowsCount - 2;
+    this.y = Math.floor(Math.random() * (maxY - minY + 1) + minY) * this.scale;
+
+    if (this.x == this.snake.x && this.y == this.snake.y) {
+      this.pickLocation();
     }
   };
 
   this.draw = function() {
     // Draw beautiful glowing neon rose fruit
-    context.shadowBlur = 12;
-    context.shadowColor = '#f43f5e';
-    context.fillStyle = '#f43f5e';
+    this.context.shadowBlur = 12;
+    this.context.shadowColor = '#f43f5e';
+    this.context.fillStyle = '#f43f5e';
 
-    drawRoundedRect(context, this.x + 4, this.y + 4, scale - 8, scale - 8, 4);
+    drawRoundedRect(this.context, this.x + 4, this.y + 4, this.scale - 8, this.scale - 8, 4);
 
-    context.shadowBlur = 0;
+    this.context.shadowBlur = 0;
   };
 }

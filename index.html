@@ -26,101 +26,132 @@
 <body>
   <div id="particles-js"></div>
   <div class="page-wrapper">
-  <div class="container-fluid py-4">
-    <div class="row justify-content-center align-items-start">
+    <div class="container-fluid py-4">
+      <div class="row justify-content-center align-items-start">
 
-      <!-- Left Column: Metrics & Controls -->
-      <div class="col-12 col-md-5 col-lg-5 col-xl-4 text-white mb-4">
+        <!-- Left Column: Metrics & Controls -->
+        <div class="col-12 col-md-5 col-lg-5 col-xl-4 text-white mb-4">
 
-        <!-- Speed Slider Card -->
-        <div class="card bg-dark border-secondary mb-4 shadow">
-          <div class="card-body">
-            <label for="speedSlider" class="d-block text-center font-weight-bold">Game Speed (Frame Delay: <span
-                id="speedVal" class="text-warning">20</span> ms)</label>
-            <input type="range" class="custom-range" id="speedSlider" min="1" max="250" value="20">
-            <div class="d-flex justify-content-between text-muted small mt-1">
-              <span>Fastest (1ms)</span>
-              <span>Slowest (250ms)</span>
+          <!-- Speed Slider Card -->
+          <div class="card bg-dark border-secondary mb-4 shadow">
+            <div class="card-body">
+              <label for="speedSlider" class="d-block text-center font-weight-bold">Game Speed (Frame Delay: <span
+                  id="speedVal" class="text-warning">20</span> ms)</label>
+              <input type="range" class="custom-range" id="speedSlider" min="1" max="250" value="20">
+              <div class="d-flex justify-content-between text-muted small mt-1">
+                <span>Fastest (1ms)</span>
+                <span>Slowest (250ms)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Card -->
+          <div class="card bg-dark border-secondary shadow">
+            <div class="card-header border-secondary text-center font-weight-bold text-uppercase tracking-wider">
+              DQN Training Dashboard (Mini vs Large)
+            </div>
+            <div class="card-body">
+              <div class="row text-center font-weight-bold mb-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Metric</div>
+                <div class="col-4 text-warning small">Chess (8x8)</div>
+                <div class="col-4 text-info small">Go (19x19)</div>
+              </div>
+
+              <hr class="border-secondary my-1">
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Iterations</div>
+                <div id="mini-itt" class="col-4 font-weight-bold text-light">0</div>
+                <div id="large-itt" class="col-4 font-weight-bold text-light">0</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Games</div>
+                <div id="mini-games" class="col-4 font-weight-bold text-light">0</div>
+                <div id="large-games" class="col-4 font-weight-bold text-light">0</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Exploration</div>
+                <div id="mini-epsilon" class="col-4 font-weight-bold text-warning">0.00</div>
+                <div id="large-epsilon" class="col-4 font-weight-bold text-warning">0.00</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">TD Error</div>
+                <div id="mini-tderror" class="col-4 font-weight-bold text-danger">0.00</div>
+                <div id="large-tderror" class="col-4 font-weight-bold text-danger">0.00</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Score/High</div>
+                <div class="col-4 font-weight-bold text-success"><span id="mini-score">0</span> / <span
+                    id="mini-highscore">0</span></div>
+                <div class="col-4 font-weight-bold text-info"><span id="large-score">0</span> / <span
+                    id="large-highscore">0</span></div>
+              </div>
+
+              <hr class="border-secondary my-2">
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Current Rew</div>
+                <div id="mini-cur-rew" class="col-4 font-weight-bold text-light">0.00</div>
+                <div id="large-cur-rew" class="col-4 font-weight-bold text-light">0.00</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Mean Rew</div>
+                <div id="mini-mean-rew" class="col-4 font-weight-bold text-success">0.00</div>
+                <div id="large-mean-rew" class="col-4 font-weight-bold text-success">0.00</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Min Rew</div>
+                <div id="mini-min-rew" class="col-4 font-weight-bold text-danger font-size-sm">0.00</div>
+                <div id="large-min-rew" class="col-4 font-weight-bold text-danger font-size-sm">0.00</div>
+              </div>
+
+              <div class="row text-center align-items-center my-2">
+                <div class="col-4 text-muted text-uppercase small text-left">Max Rew</div>
+                <div id="mini-max-rew" class="col-4 font-weight-bold text-primary font-size-sm">0.00</div>
+                <div id="large-max-rew" class="col-4 font-weight-bold text-primary font-size-sm">0.00</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Game Canvases (Side-by-side) -->
+        <div class="col-12 col-md-7 col-lg-7 col-xl-8 content">
+          <div class="row">
+            <div class="col-12 col-sm-6 text-center mb-4">
+              <h6 class="text-warning font-weight-bold text-uppercase tracking-wider mb-2">Chess size (8x8)</h6>
+              <canvas class="canvas border border-secondary rounded shadow-lg" id="gameCanvasMini" height="256"
+                width="256"></canvas>
+            </div>
+            <div class="col-12 col-sm-6 text-center mb-4">
+              <h6 class="text-info font-weight-bold text-uppercase tracking-wider mb-2">Go board size (19x19)</h6>
+              <canvas class="canvas border border-secondary rounded shadow-lg" id="gameCanvasLarge" height="608"
+                width="608"></canvas>
             </div>
           </div>
         </div>
 
-        <!-- Dashboard Card -->
-        <div class="card bg-dark border-secondary shadow">
-          <div class="card-header border-secondary text-center font-weight-bold text-uppercase tracking-wider">
-            DQN Training Dashboard
-          </div>
-          <div class="card-body">
-            <div class="row text-center">
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">Iterations</div>
-                <div id="metric-itt" class="h5 font-weight-bold text-light">0</div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">Games Played</div>
-                <div id="metric-games" class="h5 font-weight-bold text-light">0</div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">Exploration (ε)</div>
-                <div id="metric-epsilon" class="h5 font-weight-bold text-warning">0.00</div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">TD Error</div>
-                <div id="metric-tderror" class="h5 font-weight-bold text-danger">0.00</div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">Current Score</div>
-                <div id="metric-score" class="h5 font-weight-bold text-success">0</div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="small text-muted text-uppercase">High Score</div>
-                <div id="metric-highscore" class="h5 font-weight-bold text-info">0</div>
-              </div>
-            </div>
-            <hr class="border-secondary">
-            <div class="row text-center">
-              <div class="col-6 mb-2">
-                <div class="small text-muted text-uppercase">Game Reward</div>
-                <div id="metric-cur-rew" class="h6 font-weight-bold text-info">0.00</div>
-              </div>
-              <div class="col-6 mb-2">
-                <div class="small text-muted text-uppercase">Mean Reward</div>
-                <div id="metric-mean-rew" class="h6 font-weight-bold text-success">0.00</div>
-              </div>
-              <div class="col-6 mb-2">
-                <div class="small text-muted text-uppercase">Min Reward</div>
-                <div id="metric-min-rew" class="h6 font-weight-bold text-danger">0.00</div>
-              </div>
-              <div class="col-6 mb-2">
-                <div class="small text-muted text-uppercase">Max Reward</div>
-                <div id="metric-max-rew" class="h6 font-weight-bold text-primary">0.00</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Right Column: Game Canvas -->
-      <div class="col-12 col-md-7 col-lg-7 col-xl-6 text-center content">
-        <canvas class="canvas border border-secondary rounded shadow-lg" id="gameCanvas" height="608" width="608"></canvas>
       </div>
 
     </div>
+    <!-- container end -->
 
-  </div>
-  <!-- container end -->
-
-  <!-- Sticky Footer -->
-  <footer class="site-footer">
-    <hr class="footer-divider">
-    <p class="small mb-0">
-      Made by Jahan.
-      &nbsp;·&nbsp;
-      Inspired by <a href="https://cs.stanford.edu/people/karpathy/reinforcejs/" target="_blank"
-        class="text-info font-weight-bold">Karpathy's ReinforceJS</a>.
-    </p>
-  </footer>
+    <!-- Sticky Footer -->
+    <footer class="site-footer">
+      <hr class="footer-divider">
+      <p class="small mb-0">
+        Made by Jahan.
+        &nbsp;·&nbsp;
+        Inspired by <a href="https://cs.stanford.edu/people/karpathy/reinforcejs/" target="_blank"
+          class="text-info font-weight-bold">Karpathy's ReinforceJS</a>.
+      </p>
+    </footer>
 
   </div><!-- /page-wrapper -->
 </body>

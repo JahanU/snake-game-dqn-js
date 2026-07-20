@@ -1,10 +1,13 @@
 const NEIGHBOURS_CELLS = 1; //The input is the n neighbour cells & angle to apple
 
 class Agent {
-  constructor(spec) {
-    this.inputMode = inputMode;
-    this.neighboursCells = neighboursCells;
+  constructor(spec, snake, fruit, canvas, metricPrefix, highscoreKey) {
     this.spec = spec;
+    this.snake = snake;
+    this.fruit = fruit;
+    this.canvas = canvas;
+    this.prefix = metricPrefix;
+    this.highscoreKey = highscoreKey;
 
     this.env = {
       getNumStates: function () {
@@ -58,11 +61,11 @@ class Agent {
     let reward = this.getReward();
     let res = 0;
 
-    if (snake.eat(fruit)) {
-      fruit.pickLocation();
+    if (this.snake.eat(this.fruit)) {
+      this.fruit.pickLocation();
       res = 1;
       reward = this.rewards.apple;
-    } else if (snake.checkCollision() == true) {
+    } else if (this.snake.checkCollision() == true) {
       res = -1;
       reward = this.rewards.death;
     }
@@ -77,42 +80,42 @@ class Agent {
     }
 
     let direction = this.getBrainDecision();
-    snake.agentMoveSnake(direction);
+    this.snake.agentMoveSnake(direction);
     this.hasActed = true;
   }
 
   showAgentStats() {
-    document.getElementById('metric-itt').innerText = this.agent.t;
-    document.getElementById('metric-games').innerText = this.rewardCount.nGames;
-    document.getElementById('metric-epsilon').innerText = this.agent.epsilon.toFixed(4);
-    document.getElementById('metric-tderror').innerText = this.agent.tderror.toFixed(5);
-    document.getElementById('metric-score').innerText = snake.total;
-    document.getElementById('metric-highscore').innerText = localStorage['highestScoreKey'] || 0;
+    document.getElementById(`${this.prefix}-itt`).innerText = this.agent.t;
+    document.getElementById(`${this.prefix}-games`).innerText = this.rewardCount.nGames;
+    document.getElementById(`${this.prefix}-epsilon`).innerText = this.agent.epsilon.toFixed(4);
+    document.getElementById(`${this.prefix}-tderror`).innerText = this.agent.tderror.toFixed(5);
+    document.getElementById(`${this.prefix}-score`).innerText = this.snake.total;
+    document.getElementById(`${this.prefix}-highscore`).innerText = localStorage[this.highscoreKey] || 0;
 
-    document.getElementById('metric-cur-rew').innerText = this.rewardCount.gameReward.toFixed(2);
-    document.getElementById('metric-mean-rew').innerText = this.rewardCount.totGamesMeanReward.toFixed(2);
-    document.getElementById('metric-min-rew').innerText =
+    document.getElementById(`${this.prefix}-cur-rew`).innerText = this.rewardCount.gameReward.toFixed(2);
+    document.getElementById(`${this.prefix}-mean-rew`).innerText = this.rewardCount.totGamesMeanReward.toFixed(2);
+    document.getElementById(`${this.prefix}-min-rew`).innerText =
       this.rewardCount.totGamesMinReward === 9999999 ? 'N/A' : this.rewardCount.totGamesMinReward.toFixed(2);
-    document.getElementById('metric-max-rew').innerText =
+    document.getElementById(`${this.prefix}-max-rew`).innerText =
       this.rewardCount.totGamesMaxReward === -999999 ? 'N/A' : this.rewardCount.totGamesMaxReward.toFixed(2);
   }
 
   //ML
   getBrainDecision() {
     let input = []; // Stores game episode to learn from
-    input.push(map(snake.getAngleToFruit(), -180, 180, 0, 1));
-    let maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
-    input.push(map(snake.getDistanceToFruit(), 0, maxDist, 0, 1));
-    let obstacles = snake.getObstacles();
+    input.push(map(this.snake.getAngleToFruit(), -180, 180, 0, 1));
+    let maxDist = Math.sqrt(this.canvas.width * this.canvas.width + this.canvas.height * this.canvas.height);
+    input.push(map(this.snake.getDistanceToFruit(), 0, maxDist, 0, 1));
+    let obstacles = this.snake.getObstacles();
     input.push(...obstacles);
     let action = this.act(input); // Act based on batch data
     return action;
   }
 
   getReward() {
-    let maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+    let maxDist = Math.sqrt(this.canvas.width * this.canvas.width + this.canvas.height * this.canvas.height);
     return map(
-      snake.getDistanceToFruit(),
+      this.snake.getDistanceToFruit(),
       0,
       maxDist,
       this.rewards.nearApple,

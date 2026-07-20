@@ -1,22 +1,7 @@
-const canvas = document.querySelector('.canvas'); // Get access to the canvas
-const context = canvas.getContext('2d'); // Allows us to do 2D edits to the canvas (i.e draw on the canvas)
-const scale = 32; // Size
-const rows = canvas.height / scale;
-const columns = canvas.width / scale;
-let snake;
-let fruit;
-let brain;
-
-// default values for the agent
-let itt = 1;
-let inputMode = 1; // 1
-let neighboursCells = 2; // 2
-let size = 32;
+let miniGame;
+let largeGame;
 
 let spec = {
-  inputMode: inputMode, //1
-  neighboursCells: neighboursCells, //Neighbour cells. 1 => 9 cells, 2 => 25 cells...
-  size: size,
   update: 'qlearn',
   gamma: 0.9,
   epsilon: 0.02,
@@ -26,95 +11,114 @@ let spec = {
   num_hidden_units: 100
 };
 
+class GameInstance {
+  constructor(canvasId, scale, spec, metricPrefix, highscoreKey) {
+    this.canvas = document.getElementById(canvasId);
+    this.context = this.canvas.getContext('2d');
+    this.scale = scale;
+    this.rows = this.canvas.height / scale;
+    this.columns = this.canvas.width / scale;
+    
+    this.snake = new Snake(this.canvas, this.context, this.scale);
+    this.fruit = new Fruit(this.canvas, this.context, this.scale, this.snake);
+    this.snake.fruit = this.fruit; // Bind fruit to snake
+    
+    this.agent = new Agent(spec, this.snake, this.fruit, this.canvas, metricPrefix, highscoreKey);
+    this.fruit.pickLocation();
+  }
+  
+  update() {
+    // Draw sleek dark slate board
+    this.context.fillStyle = '#0f172a';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Draw grid checkered squares
+    for (let r = 2; r < this.rows; r++) {
+      for (let c = 0; c < this.columns; c++) {
+        if ((r + c) % 2 === 0) {
+          this.context.fillStyle = '#0b0f19';
+          this.context.fillRect(c * this.scale, r * this.scale, this.scale, this.scale);
+        }
+      }
+    }
+
+    this.fruit.draw();
+    this.snake.draw();
+    
+    let displayScore =
+      'Score: ' + this.snake.total + '  |  Record: ' + Math.max(this.snake.total, localStorage[this.agent.highscoreKey] || 0);
+
+    if (this.snake.paused == false) {
+      this.snake.update(); // Update frame
+      this.showTitle(displayScore);
+      this.agent.trainAgent();
+      this.agent.showAgentStats();
+      this.highestScore();
+    } else {
+      this.onPaused();
+    }
+  }
+  
+  showTitle(displayScore) {
+    this.context.fillStyle = '#1e293b'; 
+    this.context.fillRect(0, 0, this.canvas.width, this.scale * 2);
+
+    this.context.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+    this.context.lineWidth = 1;
+    this.context.beginPath();
+    this.context.moveTo(0, this.scale * 2);
+    this.context.lineTo(this.canvas.width, this.scale * 2);
+    this.context.stroke();
+
+    this.context.fillStyle = '#38bdf8'; 
+    this.context.font = 'bold 12px "Inter", sans-serif'; 
+    this.context.fillText("SNAKE DQN AI", 12, this.scale + 4);
+
+    this.context.fillStyle = '#e2e8f0'; 
+    this.context.font = '10px "Inter", sans-serif';
+    this.context.textAlign = 'right';
+    this.context.fillText(displayScore, this.canvas.width - 12, this.scale + 4);
+    this.context.textAlign = 'left';
+  }
+  
+  highestScore() {
+    let currentHigh = parseInt(localStorage[this.agent.highscoreKey] || 0);
+    if (this.snake.total > currentHigh) {
+      localStorage[this.agent.highscoreKey] = this.snake.total;
+    }
+  }
+  
+  onPaused() {
+    if (!this.snake.gameOver) {
+      let displayScore =
+        'Score: ' + this.snake.total + '  |  Record: ' + Math.max(this.snake.total, localStorage[this.agent.highscoreKey] || 0);
+      this.showTitle(displayScore);
+      
+      this.context.fillStyle = 'yellow';
+      this.context.strokeStyle = 'black';
+      this.context.font = '30px sans-serif';
+      this.context.textAlign = 'center';
+      this.context.fillText('Paused', this.canvas.width / 2, this.canvas.height / 1.75);
+      this.context.strokeText('Paused', this.canvas.width / 2, this.canvas.height / 1.75);
+      this.context.textAlign = 'left';
+    }
+  }
+}
+
 // Init function, setup objects
 function setup() {
-  snake = new Snake();
-  fruit = new Fruit();
-  agent = new Agent(spec);
-  context.fillStyle = 'white';
-  context.font = '26px sans-serif';
-  fruit.pickLocation(); // Choose random location
-  if (localStorage.getItem('highestScoreKey') === null)
-    localStorage['highestScoreKey'] = 0;
-}
-
-function showTitle(displayScore) {
-  // Redraw header area background
-  context.fillStyle = '#1e293b'; 
-  context.fillRect(0, 0, canvas.width, scale * 2);
-
-  // Header bottom border
-  context.strokeStyle = 'rgba(59, 130, 246, 0.4)';
-  context.lineWidth = 1;
-  context.beginPath();
-  context.moveTo(0, scale * 2);
-  context.lineTo(canvas.width, scale * 2);
-  context.stroke();
-
-  // Draw title text
-  context.fillStyle = '#38bdf8'; 
-  context.font = 'bold 18px "Inter", sans-serif';
-  context.fillText("SNAKE DQN AI", 20, scale + 6);
-
-  // Draw score text
-  context.fillStyle = '#e2e8f0'; 
-  context.font = '16px "Inter", sans-serif';
-  context.textAlign = 'right';
-  context.fillText(displayScore, canvas.width - 20, scale + 6);
-  context.textAlign = 'left'; // restore alignment
-}
-
-function showGameState(displayMessage, colour, xpos, ypos) {
-  context.fillStyle = colour;
-  context.strokeStyle = 'black';
-  context.font = '80px sans-serif';
-  context.fillText(displayMessage, canvas.width / xpos, canvas.height / ypos);
-  context.strokeText(displayMessage, canvas.width / xpos, canvas.height / ypos);
-  context.fill();
-  context.stroke();
-}
-
-function updateSnakeColour() {
-  // Update snake colour to the pause colour
-  for (let i = 0; i < snake.tail.length; i++) {
-    context.beginPath();
-    context.arc(snake.tail[i].x + 16, snake.tail[i].y + 16, 15, 0, 2 * Math.PI);
-    context.fill();
-    context.stroke();
-  }
+  miniGame = new GameInstance('gameCanvasMini', 32, spec, 'mini', 'highestScoreKeyMini');
+  largeGame = new GameInstance('gameCanvasLarge', 32, spec, 'large', 'highestScoreKeyLarge');
 }
 
 // Runs game // MAIN
 function updateGame() {
-  // Draw sleek dark slate board
-  context.fillStyle = '#0f172a';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Draw grid checkered squares
-  for (let r = 2; r < rows; r++) {
-    for (let c = 0; c < columns; c++) {
-      if ((r + c) % 2 === 0) {
-        context.fillStyle = '#0b0f19'; // Slightly darker square
-        context.fillRect(c * scale, r * scale, scale, scale);
-      }
-    }
-  }
-
-  fruit.draw();
-  snake.draw();
-  let displayScore =
-    'Score: ' + snake.total + '  |  Record: ' + Math.max(snake.total, localStorage['highestScoreKey']);
-
-  if (snake.paused == false) {
-    snake.update(); // Update frame
-    this.showTitle(displayScore);
-    agent.trainAgent();
-    agent.showAgentStats();
-    this.highestScore();
-  } else {
-    this.onPaused();
+  if (miniGame && largeGame) {
+    miniGame.update();
+    largeGame.update();
   }
 }
+
 let gameInterval;
 let gameSpeed = 20; // Default speed in ms
 
@@ -135,26 +139,11 @@ document.getElementById('speedSlider').addEventListener('input', function (e) {
 // Start the game loop
 setGameSpeed(gameSpeed);
 
-function onPaused() {
-  if (!snake.gameOver) {
-    displayScore =
-      snake.total + '   Highest Score: ' + Math.max(snake.total, localStorage['highestScoreKey']);
-    showTitle(displayScore);
-    this.showGameState('Paused', 'yellow', 3.5, 1.75);
-  }
-}
-
 document.onkeydown = function (event) {
-  // keyCode = Convert keyboard action to number
-  if (event.keyCode >= 79) {   // pause = 80, sound = 79
-    snake.toggleButtons(event.keyCode);
-  }
-  else { // Before AI was implemented, could control snake
-    snake.changeDirection(event.keyCode);
+  if (event.keyCode === 80) { // P = pause both
+    if (miniGame && largeGame) {
+      miniGame.snake.paused = !miniGame.snake.paused;
+      largeGame.snake.paused = !largeGame.snake.paused;
+    }
   }
 };
-
-function highestScore() {
-  if (snake.total > localStorage['highestScoreKey'])
-    localStorage['highestScoreKey'] = snake.total; // only strings
-}
