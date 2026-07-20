@@ -27,14 +27,15 @@
   <div id="particles-js"></div>
   <div class="container-fluid py-4">
     <div class="row justify-content-center align-items-start">
-      
+
       <!-- Left Column: Metrics & Controls -->
       <div class="col-12 col-md-5 col-lg-5 col-xl-4 text-white mb-4">
-        
+
         <!-- Speed Slider Card -->
         <div class="card bg-dark border-secondary mb-4 shadow">
           <div class="card-body">
-            <label for="speedSlider" class="d-block text-center font-weight-bold">Game Speed (Frame Delay: <span id="speedVal" class="text-warning">20</span> ms)</label>
+            <label for="speedSlider" class="d-block text-center font-weight-bold">Game Speed (Frame Delay: <span
+                id="speedVal" class="text-warning">20</span> ms)</label>
             <input type="range" class="custom-range" id="speedSlider" min="1" max="250" value="20">
             <div class="d-flex justify-content-between text-muted small mt-1">
               <span>Fastest (1ms)</span>
@@ -101,10 +102,24 @@
 
       <!-- Right Column: Game Canvas -->
       <div class="col-12 col-md-7 col-lg-7 col-xl-6 text-center content">
-        <canvas class="canvas border border-secondary rounded shadow-lg" height="608" width="608" style="max-width: 608px;"></canvas>
+        <canvas class="canvas border border-secondary rounded shadow-lg" height="608" width="608"
+          style="max-width: 608px;"></canvas>
       </div>
 
     </div>
+
+    <!-- Footer -->
+    <div class="row mt-5 justify-content-center">
+      <div class="col-12 text-center text-muted py-3">
+        <hr class="border-secondary mb-3">
+        <p class="small mb-0">
+          Made by Jahan.
+          <br>Inspired by <a href="https://cs.stanford.edu/people/karpathy/reinforcejs/" target="_blank"
+            class="text-info font-weight-bold">Karpathy's ReinforceJS</a>.
+        </p>
+      </div>
+    </div>
+
   </div>
   <!-- container end -->
 </body>
