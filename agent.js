@@ -82,14 +82,19 @@ class Agent {
   }
 
   showAgentStats() {
-    document.getElementById('itt').innerText = 'Iterations: ' + this.agent.t;
-    document.getElementById('rew').innerText =
-      'Min Reward: ' +
-      agent.rewardCount.totGamesMinReward.toFixed(2) +
-      ', Max Reward: ' +
-      agent.rewardCount.totGamesMaxReward.toFixed(2) +
-      ', Mean Reward: ' +
-      agent.rewardCount.totGamesMeanReward.toFixed(2);
+    document.getElementById('metric-itt').innerText = this.agent.t;
+    document.getElementById('metric-games').innerText = this.rewardCount.nGames;
+    document.getElementById('metric-epsilon').innerText = this.agent.epsilon.toFixed(4);
+    document.getElementById('metric-tderror').innerText = this.agent.tderror.toFixed(5);
+    document.getElementById('metric-score').innerText = snake.total;
+    document.getElementById('metric-highscore').innerText = localStorage['highestScoreKey'] || 0;
+
+    document.getElementById('metric-cur-rew').innerText = this.rewardCount.gameReward.toFixed(2);
+    document.getElementById('metric-mean-rew').innerText = this.rewardCount.totGamesMeanReward.toFixed(2);
+    document.getElementById('metric-min-rew').innerText =
+      this.rewardCount.totGamesMinReward === 9999999 ? 'N/A' : this.rewardCount.totGamesMinReward.toFixed(2);
+    document.getElementById('metric-max-rew').innerText =
+      this.rewardCount.totGamesMaxReward === -999999 ? 'N/A' : this.rewardCount.totGamesMaxReward.toFixed(2);
   }
 
   //ML

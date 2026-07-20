@@ -84,7 +84,25 @@ function updateGame() {
     this.onPaused();
   }
 }
-window.setInterval(this.updateGame, 20); // Speed, update frames rate
+let gameInterval;
+let gameSpeed = 20; // Default speed in ms
+
+function setGameSpeed(newSpeed) {
+  gameSpeed = newSpeed;
+  document.getElementById('speedVal').innerText = gameSpeed;
+  if (gameInterval) {
+    clearInterval(gameInterval);
+  }
+  gameInterval = setInterval(updateGame, gameSpeed);
+}
+
+// Listen to slider changes to dynamically update speed
+document.getElementById('speedSlider').addEventListener('input', function (e) {
+  setGameSpeed(parseInt(e.target.value));
+});
+
+// Start the game loop
+setGameSpeed(gameSpeed);
 
 function onPaused() {
   if (!snake.gameOver) {
