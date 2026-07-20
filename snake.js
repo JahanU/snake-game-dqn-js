@@ -152,14 +152,34 @@ function Snake() {
 
   // AI:
   this.getDistanceToFruit = function () {
-    let x = this.tail[this.tail.length - 1].x - fruit.x;
-    let y = this.tail[this.tail.length - 1].y - fruit.y;
-    return Math.sqrt(x * x + y * y);
+    let deltaX = this.x - fruit.x;
+    let deltaY = this.y - fruit.y;
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
   };
 
   this.getAngleToFruit = function () {
     let deltaX = this.x - fruit.x;
     let deltaY = this.y - fruit.y;
     return (Math.atan2(deltaY, deltaX) * 180) / PI;
+  };
+
+  this.getObstacles = function () {
+    let obstacles = [0, 0, 0, 0]; // up, right, down, left
+    // Up
+    if (this.y - scale < scale * 2 || this.isTail(this.x, this.y - scale)) obstacles[0] = 1;
+    // Right
+    if (this.x + scale >= canvas.width || this.isTail(this.x + scale, this.y)) obstacles[1] = 1;
+    // Down
+    if (this.y + scale >= canvas.height || this.isTail(this.x, this.y + scale)) obstacles[2] = 1;
+    // Left
+    if (this.x - scale < 0 || this.isTail(this.x - scale, this.y)) obstacles[3] = 1;
+    return obstacles;
+  };
+
+  this.isTail = function (x, y) {
+    for (let i = 0; i < this.tail.length; i++) {
+      if (x === this.tail[i].x && y === this.tail[i].y) return true;
+    }
+    return false;
   };
 } // Class end

@@ -8,7 +8,7 @@ class Agent {
 
     this.env = {
       getNumStates: function () {
-        return 2 + Math.pow(1 + 2 * spec.neighboursCells, 2); // 27
+        return 6; // angle, distance, 4 obstacle sensors
       },
       getMaxNumActions: function () {
         return 4;
@@ -55,25 +55,30 @@ class Agent {
   }
 
   trainAgent() {
-    let direction = agent.getBrainDecision();
-    snake.agentMoveSnake(direction);
-    let reward = agent.getReward();
+    let reward = this.getReward();
     let res = 0;
 
     if (snake.eat(fruit)) {
       fruit.pickLocation();
       res = 1;
-      reward = agent.rewards.apple;
+      reward = this.rewards.apple;
     } else if (snake.checkCollision() == true) {
       res = -1;
-      reward = agent.rewards.death;
+      reward = this.rewards.death;
     }
-    agent.rewardCount.gameReward += reward;
-    agent.learn(reward);
+    this.rewardCount.gameReward += reward;
+
+    if (this.hasActed) {
+      this.learn(reward);
+    }
 
     if (res === -1) {
-      agent.rewardCount.recordReward();
+      this.rewardCount.recordReward();
     }
+
+    let direction = this.getBrainDecision();
+    snake.agentMoveSnake(direction);
+    this.hasActed = true;
   }
 
   showAgentStats() {
@@ -91,19 +96,22 @@ class Agent {
   getBrainDecision() {
     let input = []; // Stores game episode to learn from
     input.push(map(snake.getAngleToFruit(), -180, 180, 0, 1));
-    input.push(map(snake.getDistanceToFruit(), 0, Math.sqrt(2 * (size * size)), 0, 1));
-    let action = agent.act(input); // Act based on batch data
-    // Here we are storying past plays so that the agent can learn and improve
+    let maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+    input.push(map(snake.getDistanceToFruit(), 0, maxDist, 0, 1));
+    let obstacles = snake.getObstacles();
+    input.push(...obstacles);
+    let action = this.act(input); // Act based on batch data
     return action;
   }
 
   getReward() {
+    let maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
     return map(
       snake.getDistanceToFruit(),
       0,
-      Math.sqrt(2 * (size * size)),
-      agent.rewards.nearApple,
-      agent.rewards.farApple
+      maxDist,
+      this.rewards.nearApple,
+      this.rewards.farApple
     );
   }
 }
